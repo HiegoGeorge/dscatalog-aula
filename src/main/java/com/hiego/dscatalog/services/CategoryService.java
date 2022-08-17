@@ -6,10 +6,11 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
-import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ public class CategoryService {
 	
 	@Autowired
 	private CategoryRepository categoryRepository;	
+	
 	
 	@Transactional(readOnly = true)
 	public List<CategoryDTO> Buscar(){
@@ -62,7 +64,7 @@ public class CategoryService {
 		try {
 		Category categoryEntidade = categoryRepository.getReferenceById(id);
 		
-		// getReferenceById-> ele instania objeto provisorio com os dados e id no objeto, nao faz consulta direto no banco
+		// getReferenceById-> ele instancia objeto provisorio com os dados e id no objeto, nao faz consulta direto no banco
 		// so vai no banco para salvar e nao para buscar
 		//findById ele vai no banco para verificar
 		
@@ -89,6 +91,12 @@ public class CategoryService {
 			throw new DataBaseException("Integrity violation");
 		}
 		
+	}
+
+	@Transactional(readOnly = true)
+	public Page<CategoryDTO> BuscarPorPagina(Pageable pageable) {		
+		Page<Category> list = categoryRepository.findAll(pageable);
+		return list.map(x-> new CategoryDTO(x));		
 	}
 
 
