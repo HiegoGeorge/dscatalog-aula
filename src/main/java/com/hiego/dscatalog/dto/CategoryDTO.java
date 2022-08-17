@@ -21,6 +21,7 @@ public class CategoryDTO implements Serializable{
 		this.name = name;
 	}
 	
+//-------------------converter Entidade para DTO---------------------------//
 	//construtor que recebe entidade
 	//povoando o DTO com os valores da entidade
 	public CategoryDTO(Category category) {
