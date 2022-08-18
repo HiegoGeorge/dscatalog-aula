@@ -3,6 +3,8 @@ package com.hiego.dscatalog.resources;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,7 +43,7 @@ public class UserResource {
 	
 	
 	@PostMapping("/user")
-	public ResponseEntity<UserDTO> criarCategoria(@RequestBody UserInsertDTO dto){
+	public ResponseEntity<UserDTO> criarCategoria(@Valid @RequestBody UserInsertDTO dto){
 		UserDTO newDTO = userService.insert(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newDTO.getId()).toUri();
 		return ResponseEntity.created(uri).body(newDTO);

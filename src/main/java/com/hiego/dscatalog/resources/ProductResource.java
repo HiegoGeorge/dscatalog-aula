@@ -3,6 +3,8 @@ package com.hiego.dscatalog.resources;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,14 +43,14 @@ public class ProductResource {
 	
 	
 	@PostMapping("/buscar-products")
-	public ResponseEntity<ProductDTO> criarCategoria(@RequestBody ProductDTO dto){
+	public ResponseEntity<ProductDTO> criarCategoria(@Valid @RequestBody ProductDTO dto){//@Valid pega as validaçoes do DTO
 		dto = productService.insert(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
 		return ResponseEntity.created(uri).body(dto);
 	}
 
 	@PutMapping("/buscar-products/{id}")
-	public ResponseEntity<ProductDTO> criarCategoria(@PathVariable long id, @RequestBody ProductDTO dto){
+	public ResponseEntity<ProductDTO> criarCategoria(@Valid @PathVariable long id, @RequestBody ProductDTO dto){
 		dto = productService.updateProduct(id, dto);
 		return ResponseEntity.ok().body(dto);
 	}

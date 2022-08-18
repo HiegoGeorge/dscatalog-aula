@@ -77,7 +77,7 @@ public class UserService {
 		try {
 		User userEntidade = userRepository.getReferenceById(id);
 		copyDtoToEntity(dto,userEntidade);
-		userEntidade.setPassword(passwordEncoder.encode(dto.getPassword()));
+//		userEntidade.setPassword(passwordEncoder.encode(dto.getPassword()));
 		userEntidade = userRepository.saveAndFlush(userEntidade);			
 		return new UserDTO(userEntidade);
 		

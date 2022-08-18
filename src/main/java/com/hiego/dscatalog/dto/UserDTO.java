@@ -1,13 +1,12 @@
 package com.hiego.dscatalog.dto;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.FetchType;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 import com.hiego.dscatalog.entities.User;
 
@@ -15,10 +14,14 @@ public class UserDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private Long id;
+	
+	@NotBlank(message = "Campo Obrigatorio")
 	private String firstName;
 	private String lastName;
+	
+	@Email(message = "Favor colocar um e-mail valido")
 	private String email;
-	private String password;	
+
 	
 	private Set<RoleDTO>roles = new HashSet<>();
 	
@@ -27,12 +30,11 @@ public class UserDTO implements Serializable{
 	}
 	
 	
-	public UserDTO(Long id, String firstName, String lastName, String email, String password) {
+	public UserDTO(Long id, String firstName, String lastName, String email) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.password = password;
 	}
 	
 //-------------------converter Entidade para DTO---------------------------//
@@ -77,16 +79,8 @@ public class UserDTO implements Serializable{
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-		
 	
+
 
 	public Set<RoleDTO> getRoles() {
 		return roles;
