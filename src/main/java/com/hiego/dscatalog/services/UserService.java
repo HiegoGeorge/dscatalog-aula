@@ -6,11 +6,16 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.hiego.dscatalog.dto.RoleDTO;
 import com.hiego.dscatalog.dto.UserDTO;
 import com.hiego.dscatalog.dto.UserInsertDTO;
+import com.hiego.dscatalog.dto.UserUpdateDTO;
 import com.hiego.dscatalog.entities.Role;
 import com.hiego.dscatalog.entities.User;
 import com.hiego.dscatalog.repositories.RoleRepository;
@@ -26,7 +32,9 @@ import com.hiego.dscatalog.services.exceptions.DataBaseException;
 import com.hiego.dscatalog.services.exceptions.ResourceNotFoundException;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService{
+	
+	private static Logger logger = LoggerFactory.getLogger(UserService.class);
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -72,7 +80,7 @@ public class UserService {
 
 
 	@Transactional(readOnly = true)
-	public UserDTO updateUser(long id, UserDTO dto) {
+	public UserDTO updateUser(long id, UserUpdateDTO dto) {
 		
 		try {
 		User userEntidade = userRepository.getReferenceById(id);
@@ -120,7 +128,20 @@ public class UserService {
 		
 		
 	}
-	
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = userRepository.findByEmail(username);
+		
+		if(username == null) {
+			logger.error("Usuario nao encontrado" + username);
+			throw new UsernameNotFoundException("Email nao encontrado");
+		}
+		logger.info("Usuario encontrado: " + username);
+		return user;
+	}
+
+
 	
 }
 

@@ -20,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.hiego.dscatalog.dto.UserDTO;
 import com.hiego.dscatalog.dto.UserInsertDTO;
+import com.hiego.dscatalog.dto.UserUpdateDTO;
 import com.hiego.dscatalog.services.UserService;
 
 @RestController
@@ -50,9 +51,9 @@ public class UserResource {
 	}
 
 	@PutMapping("/user/{id}")
-	public ResponseEntity<UserDTO> atualizarCategoria(@PathVariable long id, @RequestBody UserDTO dto){
-		dto = userService.updateUser(id, dto);
-		return ResponseEntity.ok().body(dto);
+	public ResponseEntity<UserDTO> atualizarCategoria(@PathVariable long id, @RequestBody UserUpdateDTO dto){
+		UserDTO newDto = userService.updateUser(id, dto);
+		return ResponseEntity.ok().body(newDto);
 	}
 	
 	@DeleteMapping("/user/{id}")

@@ -1,5 +1,8 @@
 package com.hiego.dscatalog.dto;
 
+import com.hiego.dscatalog.services.validaranotationeregranegocios.UserInsertValid;
+
+@UserInsertValid
 public class UserInsertDTO extends UserDTO{
 	
 private static final long serialVersionUID = 1L;
