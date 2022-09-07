@@ -47,7 +47,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	private AuthenticationManager authenticationManager;
 	
 	@Autowired
-	private JjwtTokenEnhacer tokenEnhacer;
+	private JjwtTokenEnhacer jTokenEnhacer;
 	
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
@@ -69,7 +69,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {//quem vai autorizar e qual vai
 		//ser o formato do token
 		TokenEnhancerChain chain = new TokenEnhancerChain();
-		chain.setTokenEnhancers(Arrays.asList(accessTokenConverter,tokenEnhacer));
+		chain.setTokenEnhancers(Arrays.asList(accessTokenConverter,jTokenEnhacer));
+		
 		endpoints.authenticationManager(authenticationManager) // processar autenticaçao objeto authenticationManager
 		.tokenStore(tokenSotore)//quais objetos por processar token
 		.accessTokenConverter(accessTokenConverter)
